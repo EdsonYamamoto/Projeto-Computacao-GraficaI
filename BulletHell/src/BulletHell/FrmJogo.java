@@ -19,11 +19,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import main.Colisao;
+import service.Parser;
 
 /**
  *
@@ -40,6 +42,8 @@ public class FrmJogo
     private boolean fimJogo;
     private boolean keyRestart;
     private boolean tiro;
+    private boolean invencibilidade;
+    private long ultimoDano;
     private long ultimoTiro;
 
     public FrmJogo() {
@@ -146,6 +150,11 @@ public class FrmJogo
         //</editor-fold>
 
         /* Create and display the form */
+        List teste = Parser.Parser("C:\\Users\\Edson\\Documents\\GIT\\ProjetoComputacaoGrafica\\BulletHell\\src\\dynamics\\testLevel.lvl");
+        for (Object object : teste) {
+            
+        System.out.println(object);
+        }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FrmJogo().setVisible(true);
@@ -170,18 +179,15 @@ public class FrmJogo
             player.setX(getWidth()/2-player.getLargura()/2) ;
             lista.add(player);
  
+            
         for (int i = 0; i < GameController.getLevel()*3; i++) {
             Enemy b = new Enemy();
             try {
-                b = EnemyController.InstanciarInimigo();
+                b = EnemyController.InstanciarInimigo("1");
+                lista.add(b);
             } catch (IOException ex) {
                 Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            Random r = new Random();
-            b.setX(r.nextInt(getWidth()));
-            b.setY(r.nextInt(getHeight()));
-            lista.add(b);
         }
 
         while (true) {
@@ -191,31 +197,35 @@ public class FrmJogo
             g.fillRect(0, 0, getWidth(), getHeight());
             //Desenha um oval
 
-            //Colisao Player com Bola
+            long invencibilidadeTime = System.currentTimeMillis();
+
+            
             for (Base b : lista) {
                 if (player.colisao(b)) {
-                    player.setHealth(player.getHealth()-10);
+                    if(invencibilidadeTime > ultimoDano + 1000){
+                        ultimoDano = invencibilidadeTime;
+                        player.setHealth(player.getHealth()-10);
+                    }
                 }
             }
 
             if (player.getHealth() > 0) {
                 g.setColor(Color.BLACK);
-                g.drawString( String.valueOf(player.getHealth()) , 50, 50);
+                g.drawString("Life: " + String.valueOf(player.getHealth()) , 50, 50);
                 fimJogo = true;
             }
             g.setColor(Color.BLACK);
             g.drawString( "X: "+String.valueOf(player.getX()) , 50, 75);
             g.drawString( "Y: "+String.valueOf(player.getY()) , 50, 100);
-            g.drawString( "Points: "+GameController.getPoints() , 75, 50);
+            g.drawString( "Points: "+GameController.getPoints() , 150, 50);
             fimJogo = true;
             
-           
             for (Base b : lista) {
                 if (!Enemy.class.isInstance(b)){
                     b.mover();                
                 }
                 else{
-                    b.enemyMove();
+                    b.enemyMove(Enemy.class.cast(b).getNome());
                 }
             }
 
@@ -293,7 +303,7 @@ public class FrmJogo
                 for (int i = 0; i < GameController.getLevel()*3; i++) {
                     Enemy b = new Enemy();
                     try {
-                        b = EnemyController.InstanciarInimigo();
+                        b = EnemyController.InstanciarInimigo(b.getNome());
                     } catch (IOException ex) {
                         Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -305,7 +315,6 @@ public class FrmJogo
                 }
             }
             
-
             if (!fimJogo) {
 //                GameController
 
@@ -335,7 +344,7 @@ public class FrmJogo
 
     }
 
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

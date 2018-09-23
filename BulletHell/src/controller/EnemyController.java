@@ -22,19 +22,18 @@ import model.Enemy;
  * @author Edson
  */
 public class EnemyController {
-    public static Enemy InstanciarInimigo() throws IOException{
+    public static Enemy InstanciarInimigo(String nome) throws IOException{
         Random r = new Random();
         Enemy inimigo = new Enemy("img/enemy.png");
 
         File f = new File("C:/Users/Edson/Documents/GIT/ProjetoComputacaoGrafica/BulletHell/src/img/enemy.png");
+        
         BufferedImage image = ImageIO.read(f);
         int widthEnemy = image.getWidth();
         int heightEnemy = image.getHeight();        
-
-        int red = r.nextInt(255);
-        int green = r.nextInt(255);
-        int blue = r.nextInt(255);
-        inimigo.setCor(new Color(red, green, blue));
+        inimigo.setX(r.nextInt());
+        inimigo.setY(r.nextInt());
+        
         return inimigo;
     }
 }

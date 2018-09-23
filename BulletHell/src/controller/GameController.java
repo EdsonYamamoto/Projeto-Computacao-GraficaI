@@ -39,5 +39,4 @@ public class GameController {
     public static void setLevel(int level) {
         GameController.level = level;
     }
-    
 }

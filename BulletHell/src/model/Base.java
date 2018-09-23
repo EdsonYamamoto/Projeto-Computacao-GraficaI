@@ -113,9 +113,7 @@ public abstract class Base {
        
     }
        
-    
-
-    public void enemyMove() {
+    public void enemyMove(String nome) {
         Random r = new Random();
         int valor = r.nextInt(100);
         if (valor>0&&valor<25){
@@ -131,8 +129,9 @@ public abstract class Base {
             y = y - incY-2;
         }
         this.rect.x= x;
-        this.rect.y = y;            
+        this.rect.y = y;
     }
+    
     public void mover() {
         x = x + incX;
         y = y + incY;

@@ -13,13 +13,21 @@ package model;
  * @author glauc
  */
 public class Enemy extends Base{
-
+    private String nome;
     public Enemy(){
     }
     
     public Enemy(String url){
         super(url);
+        
     }
 
+    public String getNome() {
+        return nome;
+    }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    
 }
