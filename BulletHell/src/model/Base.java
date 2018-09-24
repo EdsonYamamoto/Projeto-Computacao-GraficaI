@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 import javax.swing.ImageIcon;
+import service.Parser;
 
 
 /**
@@ -113,22 +114,31 @@ public abstract class Base {
        
     }
        
-    public void enemyMove(String nome) {
-        Random r = new Random();
-        int valor = r.nextInt(100);
-        if (valor>0&&valor<25){
-            x = x + incX+2;
+    public void enemyMove(Enemy inimigo) {
+        //System.out.println(inimigo);
+        //System.out.println(inimigo.getNome());
+        EnemyData inimigoData = null;
+        for (EnemyData data : Parser.listaInimigos) 
+        {
+            if (data.nome.equals(inimigo.getNome())){
+                inimigoData = data;
+            }
         }
-        if (valor>25&&valor<50){
-            x = x - incX-2;
-        }
-        if (valor>50&&valor<75){
-            y = y + incY+2;
-        }
-        if (valor>75&&valor<100){
-            y = y - incY-2;
-        }
-        this.rect.x= x;
+        System.out.println(inimigo);
+            if (x<inimigoData.enemyPosition.get(inimigo.type).x){
+                x = x + incX+2;
+            }
+            if(x>inimigoData.enemyPosition.get(inimigo.type).x){
+                x = x + incX-2;
+            }
+            if (y<inimigoData.enemyPosition.get(inimigo.type).y){
+                y = y + incX+2;
+            }
+            if (y>inimigoData.enemyPosition.get(inimigo.type).y){
+                y = y + incX-2;
+            }
+            
+        this.rect.x = x;
         this.rect.y = y;
     }
     

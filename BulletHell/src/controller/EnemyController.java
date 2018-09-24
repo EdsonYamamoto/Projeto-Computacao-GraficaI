@@ -16,24 +16,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import model.Enemy;
+import model.EnemyData;
+import service.Parser;
 
 /**
  *
  * @author Edson
  */
 public class EnemyController {
-    public static Enemy InstanciarInimigo(String nome) throws IOException{
-        Random r = new Random();
-        Enemy inimigo = new Enemy("img/enemy.png");
-
-        File f = new File("C:/Users/Edson/Documents/GIT/ProjetoComputacaoGrafica/BulletHell/src/img/enemy.png");
+    public static Enemy InstanciarInimigo(EnemyData Inimigo) throws IOException{
+        Enemy inimigo = new Enemy(Inimigo.nome);
+                
+        File f = new File(Inimigo.src);
         
         BufferedImage image = ImageIO.read(f);
-        int widthEnemy = image.getWidth();
-        int heightEnemy = image.getHeight();        
-        inimigo.setX(r.nextInt());
-        inimigo.setY(r.nextInt());
-        
+       
         return inimigo;
     }
 }

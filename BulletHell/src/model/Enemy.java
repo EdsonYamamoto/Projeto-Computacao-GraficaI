@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.Random;
+
 
 
 
@@ -14,11 +16,15 @@ package model;
  */
 public class Enemy extends Base{
     private String nome;
+    public int type;
     public Enemy(){
     }
     
     public Enemy(String url){
         super(url);
+        Random r = new Random();
+        type = r.nextInt(5);
+        nome = url;
         
     }
 
@@ -29,5 +35,10 @@ public class Enemy extends Base{
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Enemy{" + "nome=" + nome + '}'+"Base{" + "x=" + x + ", y=" + y + ", incX=" + incX + ", incY=" + incY + ", cor=" + cor + ", borda=" + borda + ", largura=" + largura + ", altura=" + altura + ", rect=" + rect + ", img=" + img + '}';
+        
+    }
 }

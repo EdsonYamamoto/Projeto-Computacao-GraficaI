@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import main.Colisao;
+import model.EnemyData;
 import service.Parser;
 
 /**
@@ -150,11 +151,8 @@ public class FrmJogo
         //</editor-fold>
 
         /* Create and display the form */
-        List teste = Parser.Parser("C:\\Users\\Edson\\Documents\\GIT\\ProjetoComputacaoGrafica\\BulletHell\\src\\dynamics\\testLevel.lvl");
-        for (Object object : teste) {
-            
-        System.out.println(object);
-        }
+        Parser.Parser("C:\\Users\\Edson\\Documents\\GIT\\ProjetoComputacaoGrafica\\BulletHell\\src\\dynamics\\testLevel.lvl");
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FrmJogo().setVisible(true);
@@ -183,7 +181,7 @@ public class FrmJogo
         for (int i = 0; i < GameController.getLevel()*3; i++) {
             Enemy b = new Enemy();
             try {
-                b = EnemyController.InstanciarInimigo("1");
+                b = EnemyController.InstanciarInimigo(Parser.listaInimigos.get(0));
                 lista.add(b);
             } catch (IOException ex) {
                 Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,7 +223,7 @@ public class FrmJogo
                     b.mover();                
                 }
                 else{
-                    b.enemyMove(Enemy.class.cast(b).getNome());
+                    b.enemyMove(Enemy.class.cast(b));
                 }
             }
 
@@ -303,7 +301,7 @@ public class FrmJogo
                 for (int i = 0; i < GameController.getLevel()*3; i++) {
                     Enemy b = new Enemy();
                     try {
-                        b = EnemyController.InstanciarInimigo(b.getNome());
+                        b = EnemyController.InstanciarInimigo(Parser.listaInimigos.get(0));
                     } catch (IOException ex) {
                         Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
                     }

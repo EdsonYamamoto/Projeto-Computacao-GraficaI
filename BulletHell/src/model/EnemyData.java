@@ -5,18 +5,25 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Edson
  */
 public class EnemyData {
-    public int x;
-    public int y;
+    public ArrayList<EnemyDataPosition> enemyPosition;
     public String nome;
+    public String src;
+
+    public EnemyData() {
+        enemyPosition = new ArrayList<EnemyDataPosition>();
+    }
 
     @Override
     public String toString() {
-        return "EnemyData{" + "x=" + x + ", y=" + y + ", nome=" + nome + '}';
+        return "EnemyData{" + "enemyPosition=" + enemyPosition + ", nome=" + nome + ", src=" + src + '}';
     }
-      
+    
+    
 }

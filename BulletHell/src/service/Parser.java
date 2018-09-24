@@ -13,13 +13,17 @@ import java.util.List;
 import java.util.Scanner;
 import model.Enemy;
 import model.EnemyData;
+import model.EnemyDataPosition;
 
 /**
  *
  * @author Edson
  */
 public class Parser {
-    public static List Parser(String pathArquivo){
+    public static List<EnemyData> listaInimigos;
+    
+    public static void Parser(String pathArquivo){
+        listaInimigos = new ArrayList<EnemyData>();
         File file = new File(pathArquivo);
         List movimentos = new ArrayList();
         InputStream input;
@@ -30,26 +34,40 @@ public class Parser {
             scanner.useDelimiter("(?m:^$)");
             int ntoken = 0;
             while (scanner.hasNext()) {
-                String token = scanner.next();
-                ntoken++;
-                //System.out.println(token);
-                String[] tempStr = token.split(":");
                 
-                EnemyData movimento = new EnemyData();
-                if (tempStr.length>2) {      
-                    movimento.x = Integer.parseInt(tempStr[1]);
-                    movimento.y = Integer.parseInt(tempStr[2]);
-                }
-                else{
-                    movimento.nome=token;
-                }
+                EnemyData inimigo = new EnemyData();
+                do{
+                    String token = scanner.next();
+                    ntoken++;
+                    //System.out.println(token);
+                    String[] tempStr = token.split(":");
+
+                    if (tempStr.length>2) {      
+                        EnemyDataPosition position = new EnemyDataPosition();
+                        
+                        position.x = Integer.parseInt(tempStr[1]);
+                        position.y = Integer.parseInt(tempStr[2]);
+                        inimigo.enemyPosition.add(position);
+                    }
+                    
+                    else{
+                        String teste = token.replace("\n", "").trim();
+                        String[] tempStr2 = teste.split("[|]");
+                        if ("src".equals(tempStr2[0])){
+                            inimigo.src=tempStr2[1];
+                        }
+                        if ("nome".equals(tempStr2[0])){
+                            inimigo.nome=tempStr2[1];
+                        }
+                    }
+                }while(inimigo.enemyPosition.size()!=6 || inimigo.nome==null || inimigo.src==null);
                 
-                movimentos.add(movimento);
+                listaInimigos.add(inimigo);
             }
-            //System.out.println(movimentos);
+            
         } catch (Exception e) {
             System.out.println(e);
+            return;
         }
-        return movimentos;
     }
 }

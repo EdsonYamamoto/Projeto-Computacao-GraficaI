@@ -1,13 +1,31 @@
-C:\Users\Edson\Documents\GIT\ProjetoComputacaoGrafica\BulletHell\src\img\enemy.png
+src|C:\Users\Edson\Documents\GIT\ProjetoComputacaoGrafica\BulletHell\src\img\enemy.png
 
-:50:40:0
-:10:30:0
-:50:40:0
-:50:40:0
+nome|\img\enemy1.png
 
-C:\Users\Edson\Documents\GIT\ProjetoComputacaoGrafica\BulletHell\src\img\enemy.png
+:1:40:0
 
-:50:40:0
-:10:30:0
-:50:40:0
-:50:40:0
+:800:20:0
+
+:5:600:0
+
+:1800:40:0
+
+:600:40:0
+
+:1:40:0
+
+src|C:\Users\Edson\Documents\GIT\ProjetoComputacaoGrafica\BulletHell\src\img\enemy.png
+
+nome|\img\enemy1.png
+
+:-1000:40:0
+
+:-1000:-100:0
+
+:1000:4000:0
+
+:1000:-1000:0
+
+:1000:10000:0
+
+:2000:-450:0
