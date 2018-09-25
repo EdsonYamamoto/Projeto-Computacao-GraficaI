@@ -22,7 +22,7 @@ import model.EnemyDataPosition;
 public class Parser {
     public static List<EnemyData> listaInimigos;
     
-    public static void Parser(String pathArquivo){
+    public static void ParserMonsters(String pathArquivo){
         listaInimigos = new ArrayList<EnemyData>();
         File file = new File(pathArquivo);
         List movimentos = new ArrayList();
@@ -69,5 +69,9 @@ public class Parser {
             System.out.println(e);
             return;
         }
+    }
+    
+    public static void ParserPlayer(String pathArquivo){
+        
     }
 }

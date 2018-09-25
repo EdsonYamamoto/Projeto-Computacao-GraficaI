@@ -9,7 +9,7 @@ import java.awt.Graphics;
 
 /**
  *
- * @author glauc
+ * @author edson
  */
 public class Player extends Base{
     private int health; 
@@ -25,16 +25,6 @@ public class Player extends Base{
     public Player() {
     }
     
-/*
-    @Override
-    public void desenhar(Graphics g) {
-        g.setColor(cor);
-        g.fillRect(x, y, largura, altura);
-        g.setColor(borda);
-        g.drawRect(x, y, largura, altura);
-    }    
-*/
-
     public int getHealth() {
         return health;
     }

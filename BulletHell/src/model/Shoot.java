@@ -7,17 +7,25 @@ package model;
 
 import model.Base;
 import java.awt.Graphics;
+import java.util.Random;
 
 /**
  *
- * @author glauc
+ * @author Edson
  */
 public class Shoot extends Base {
     
+    public Shoot(String url){
+        super(url);
+    }
+    
+    public Shoot(){
+    }
+    /*
     @Override
     public void desenhar(Graphics g){
         g.setColor(cor);
         g.fillRect(x, y, largura, altura);
     }
-    
+    */
 }

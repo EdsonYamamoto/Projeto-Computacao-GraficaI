@@ -16,7 +16,7 @@ import service.Parser;
 
 /**
  *
- * @author glauc
+ * @author Edson
  */
 public abstract class Base {
     
@@ -49,9 +49,6 @@ public abstract class Base {
     public int getAltura() {
         return altura;
     }
-    
-    
-    
 
     public int getX() {
         return x;
@@ -60,7 +57,6 @@ public abstract class Base {
     public void setX(int x) {
         this.x = x;
         this.rect.x = x;
-        
     }
 
     public int getY() {
@@ -124,7 +120,7 @@ public abstract class Base {
                 inimigoData = data;
             }
         }
-        System.out.println(inimigo);
+        //System.out.println(inimigo);
             if (x<inimigoData.enemyPosition.get(inimigo.type).x){
                 x = x + incX+2;
             }
@@ -206,6 +202,15 @@ public abstract class Base {
         }
         return true;
     }
+
+    public ImageIcon getImg() {
+        return img;
+    }
+
+    public void setImg(ImageIcon img) {
+        this.img = img;
+    }
+    
 
     @Override
     public String toString() {

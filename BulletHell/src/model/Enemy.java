@@ -12,11 +12,13 @@ import java.util.Random;
 
 /**
  *
- * @author glauc
+ * @author Edson
  */
 public class Enemy extends Base{
     private String nome;
     public int type;
+    public boolean soltouPoder;
+    public long tempo;
     public Enemy(){
     }
     
@@ -25,7 +27,6 @@ public class Enemy extends Base{
         Random r = new Random();
         type = r.nextInt(5);
         nome = url;
-        
     }
 
     public String getNome() {

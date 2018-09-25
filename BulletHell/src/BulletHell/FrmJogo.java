@@ -13,16 +13,17 @@ import com.sun.glass.events.KeyEvent;
 import controller.EnemyController;
 import controller.GameController;
 import controller.PlayerController;
-import controller.RestartController;
 import controller.ShootController;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import main.Colisao;
 import model.EnemyData;
@@ -30,7 +31,7 @@ import service.Parser;
 
 /**
  *
- * @author glauc
+ * @author edson
  */
 public class FrmJogo
         extends JFrame
@@ -151,7 +152,7 @@ public class FrmJogo
         //</editor-fold>
 
         /* Create and display the form */
-        Parser.Parser("C:\\Users\\Edson\\Documents\\GIT\\ProjetoComputacaoGrafica\\BulletHell\\src\\dynamics\\testLevel.lvl");
+        Parser.ParserMonsters("C:\\Users\\Edson\\Documents\\GIT\\ProjetoComputacaoGrafica\\BulletHell\\src\\dynamics\\testMonster.PraQueServeExtensao");
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -173,15 +174,16 @@ public class FrmJogo
         } catch (IOException ex) {
             Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
         }
-            player.setY(getHeight()/2-player.getAltura()/2);
-            player.setX(getWidth()/2-player.getLargura()/2) ;
-            lista.add(player);
+        player.setY(getHeight()/2-player.getAltura()/2);
+        player.setX(getWidth()/2-player.getLargura()/2) ;
+        lista.add(player);
  
-            
+        Random r = new Random();
         for (int i = 0; i < GameController.getLevel()*3; i++) {
             Enemy b = new Enemy();
             try {
-                b = EnemyController.InstanciarInimigo(Parser.listaInimigos.get(0));
+                
+                b = EnemyController.InstanciarInimigo(Parser.listaInimigos.get(r.nextInt(Parser.listaInimigos.size())));
                 lista.add(b);
             } catch (IOException ex) {
                 Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
@@ -197,16 +199,22 @@ public class FrmJogo
 
             long invencibilidadeTime = System.currentTimeMillis();
 
-            
             for (Base b : lista) {
                 if (player.colisao(b)) {
                     if(invencibilidadeTime > ultimoDano + 1000){
+                        
+                        invencibilidade=true;
                         ultimoDano = invencibilidadeTime;
                         player.setHealth(player.getHealth()-10);
+                        ImageIcon img = new ImageIcon("/C:/Users/Edson/Documents/GIT/ProjetoComputacaoGrafica/BulletHell/build/classes/img/player1.png");
+                        player.setImg(img);
                     }
                 }
             }
-
+            if(invencibilidadeTime>ultimoDano+1000) {
+                ImageIcon img = new ImageIcon("/C:/Users/Edson/Documents/GIT/ProjetoComputacaoGrafica/BulletHell/build/classes/img/player.png");
+                player.setImg(img);   
+            }
             if (player.getHealth() > 0) {
                 g.setColor(Color.BLACK);
                 g.drawString("Life: " + String.valueOf(player.getHealth()) , 50, 50);
@@ -217,7 +225,7 @@ public class FrmJogo
             g.drawString( "Y: "+String.valueOf(player.getY()) , 50, 100);
             g.drawString( "Points: "+GameController.getPoints() , 150, 50);
             fimJogo = true;
-            
+
             for (Base b : lista) {
                 if (!Enemy.class.isInstance(b)){
                     b.mover();                
@@ -235,64 +243,29 @@ public class FrmJogo
 
             if(tiro  && tempo > ultimoTiro + 500){
                 ultimoTiro = tempo;
-                lista.add(ShootController.InstanciarShoot(player));
-            }
-            
-            for (Base b : lista) {
-                Colisao aux = b.trataColisao(getWidth(), getHeight());
-                if (b!=player){
-                    if (aux == Colisao.DOWN) {
-                        lixo.add(b);
-                    }
-                    if (aux == Colisao.UP) {
-                        lixo.add(b);
-                    }
-                    if (aux == Colisao.RIGHT) {
-                        lixo.add(b);
-                    }
-                    if (aux == Colisao.LEFT) {
-                        lixo.add(b);
-                    }
-                }
-                if (b==player){
-                    if (aux == Colisao.DOWN){
-                        player.setY(getHeight()-player.getAltura());
-                    }
-                    if (aux == Colisao.UP){
-                        player.setY(player.getPlayerHeight()+30);
-                    }
-                    if (aux == Colisao.RIGHT){
-                        player.setX(getWidth()-player.getLargura());
-                    }
-                    if (aux == Colisao.LEFT){
-                        player.setX(player.getPlayerWidth());
-                    }
+                try {
+                    lista.add(ShootController.InstanciarShoot(player));
+                } catch (IOException ex) {
+                    Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             
-            for (Base tiro : lista){
-                for (Base inimigo : lista){
-                    if (inimigo.getX()+inimigo.getLargura()/2>tiro.getX()+tiro.getLargura()&&
-                        inimigo.getX()-inimigo.getLargura()/2<tiro.getX()-tiro.getLargura()){
-                        
-                        if (inimigo.getY()+inimigo.getAltura()/2>tiro.getY()+tiro.getAltura()&&
-                            inimigo.getY()-inimigo.getAltura()/2<tiro.getY()-tiro.getAltura()){
-                            if (Enemy.class.isInstance(inimigo)){
-                                GameController.setPoints(GameController.getPoints()+1);
-                                lixo.add(tiro);
-                                lixo.add(inimigo);                               
-                            }
-                        }
-                    }
-                }
+            //Método para testar colisão
+            GameController.ColidiuAlgo(lista, lixo, player, getWidth(), getHeight());
+            
+            //Método para saber se o tiro acertou algo
+            GameController.TiroAcertou(lista, lixo);
+
+            try {
+                //Método para saber se o tiro acertou algo
+                EnemyController.InimigoFazAlgo(lista, g, tempo, player);
+            } catch (IOException ex) {
+                Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             lista.removeAll(lixo);
             lixo.clear();
-
             if (player.getHealth() <= 0) {
-                g.setColor(Color.BLACK);
-                g.drawString("FIM de JOGO - Tecle R para Reiniciar", 100, 100);
                 fimJogo = false;
             }
             if (player.getHealth() > 0&& lista.size()==1) {
@@ -301,37 +274,32 @@ public class FrmJogo
                 for (int i = 0; i < GameController.getLevel()*3; i++) {
                     Enemy b = new Enemy();
                     try {
-                        b = EnemyController.InstanciarInimigo(Parser.listaInimigos.get(0));
+                        b = EnemyController.InstanciarInimigo(Parser.listaInimigos.get(r.nextInt(Parser.listaInimigos.size())));
                     } catch (IOException ex) {
                         Logger.getLogger(FrmJogo.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
-                    Random r = new Random();
                     b.setX(r.nextInt(getWidth()));
                     b.setY(r.nextInt(getHeight()));
                     lista.add(b);
                 }
             }
-            
             if (!fimJogo) {
-//                GameController
-
-                RestartController restart = new RestartController();
-                
                 g.setColor(new Color(0,0,0));
                 g.fillRect(0, 0, getWidth(),getHeight());
                 g.setColor(new Color(255,255,255));
-                g.drawString("Game over!",290,350);
+                g.drawString("FIM de JOGO - Tecle R para Reiniciar", getWidth()/2, getHeight()/2);
                 
                 if (keyRestart){
-                    player.setHealth(100);
                     fimJogo = false;
+                    for (int i = 1; i < lista.size(); i++) {
+                        lixo.add(lista.get(i));                        
+                    }
+                    player.setHealth(100);
                     GameController.setLevel(1);
+                    GameController.setPoints(0);
                 }
             }
-            
             PlayerController.PlayerPosition(player, left, right, up, down);
-            
             g.dispose();
             getBufferStrategy().show();
             try {
@@ -339,7 +307,6 @@ public class FrmJogo
             } catch (InterruptedException ex) {
             }
         }
-
     }
 
     
